@@ -35,6 +35,11 @@ public class Client extends AbstractAuditEntity implements Serializable {
     public Client() {
     }
 
+    public Client(Long id) {
+        this.id = id;
+    }
+    
+
     public Long getId() {
         return id;
     }
@@ -81,6 +86,11 @@ public class Client extends AbstractAuditEntity implements Serializable {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" + "id=" + id + '}';
     }
     
     

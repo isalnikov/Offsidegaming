@@ -42,11 +42,9 @@ public class DeviceDataTest {
         DeviceData data = new DeviceData(1000L, 2000L, 3000L);
         String value = objectMapper.writeValueAsString(data);
         log.info(value);
-
         String jsonString = "{ \"gas\" : 1000, \"cold\" :2000, \"hot\" : \"3000\" }";
         DeviceData data1 = objectMapper.readValue(jsonString, DeviceData.class);
         assertEquals(data, data1);
-        
         log.info(data1);
     }
     
@@ -63,7 +61,7 @@ public class DeviceDataTest {
         DeviceData data1 = new DeviceData(1000L, -2000L, 3000L);
         Set<ConstraintViolation<DeviceData>> violations = validator.validate(data1);
         assertFalse(violations.isEmpty());
-        log.error(violations.iterator().next().getMessage());
+        log.info(violations.iterator().next().getMessage());
     }
 
     @Test
