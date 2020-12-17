@@ -6,6 +6,7 @@ package com.isalnikov.offsidegaming.model;
  */
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.CascadeType;
@@ -29,7 +30,7 @@ public class Client extends AbstractAuditEntity implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "client_id")
-    private List<Device> device = new ArrayList<>();
+    private List<DeviceData> values = new ArrayList<>();
 
     public Client() {
     }
@@ -42,13 +43,20 @@ public class Client extends AbstractAuditEntity implements Serializable {
         this.id = id;
     }
 
-    public List<Device> getDevice() {
-        return device;
+    public List<DeviceData> getValues() {
+        return Collections.unmodifiableList(values);
     }
 
-    public void setDevice(List<Device> device) {
-        this.device = device;
+    public void setValues(List<DeviceData> values) {
+        this.values = values;
     }
+
+    
+      public void addValue(DeviceData deviceData) {
+        this.values.add(deviceData);
+        deviceData.setClient(this);
+    }
+
 
     @Override
     public int hashCode() {

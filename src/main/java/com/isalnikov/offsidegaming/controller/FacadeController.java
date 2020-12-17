@@ -4,18 +4,18 @@ package com.isalnikov.offsidegaming.controller;
  *
  * @author isalnikov
  */
+import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
+@Log4j2
 @RestController
 public class FacadeController {
 
-    private static final Logger logger = LogManager.getLogger(FacadeController.class);
+    
 
     @RequestMapping("/")
     String home() {
-        logger.info("Hello");
+        log.info("Hello");
         return "Hello World!";
     }
 

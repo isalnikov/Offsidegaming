@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.PositiveOrZero;
 
 /**
  *
@@ -26,25 +27,36 @@ public class DeviceData extends AbstractAuditEntity implements Serializable {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    private Device device;
+    private Client client;
 
     /**
      * meter reader
      */
-    @Column
-    private Long value;
+    @PositiveOrZero(message = "You cannot have negative numbers of value.") 
+    @Column(name = "gas_value" , nullable = false)
+    private Long gasValue;
+    
+    @PositiveOrZero(message = "You cannot have negative numbers of value.") 
+    @Column(name = "cold_water_value", nullable = false)
+    private Long coldWatervalue;
+    
+    @PositiveOrZero(message = "You cannot have negative numbers of value.") 
+    @Column(name = "hot_water_value", nullable = false)
+    private Long hotWatervalue;
 
-    public DeviceData() {
-    }
 
-    public DeviceData(Long value) {
-        this.value = value;
+    public DeviceData(Long gasValue, Long coldWatervalue, Long hotWatervalue) {
+        this.gasValue = gasValue;
+        this.coldWatervalue = coldWatervalue;
+        this.hotWatervalue = hotWatervalue;
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 59 * hash + Objects.hashCode(this.value);
+        int hash = 3;
+        hash = 97 * hash + Objects.hashCode(this.gasValue);
+        hash = 97 * hash + Objects.hashCode(this.coldWatervalue);
+        hash = 97 * hash + Objects.hashCode(this.hotWatervalue);
         return hash;
     }
 
@@ -60,11 +72,26 @@ public class DeviceData extends AbstractAuditEntity implements Serializable {
             return false;
         }
         final DeviceData other = (DeviceData) obj;
-        if (!Objects.equals(this.value, other.value)) {
+        if (!Objects.equals(this.gasValue, other.gasValue)) {
+            return false;
+        }
+        if (!Objects.equals(this.coldWatervalue, other.coldWatervalue)) {
+            return false;
+        }
+        if (!Objects.equals(this.hotWatervalue, other.hotWatervalue)) {
             return false;
         }
         return true;
     }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
 
     public Long getId() {
         return id;
@@ -74,12 +101,11 @@ public class DeviceData extends AbstractAuditEntity implements Serializable {
         this.id = id;
     }
 
-    public Long getValue() {
-        return value;
+    @Override
+    public String toString() {
+        return  String.format("\nvalues:\n%08d gas\n%08d cold water\n%08d hot water", gasValue ,coldWatervalue , hotWatervalue);
     }
 
-    public void setValue(Long value) {
-        this.value = value;
-    }
+
 
 }
