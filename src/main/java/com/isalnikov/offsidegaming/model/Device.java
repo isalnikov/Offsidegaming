@@ -13,6 +13,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
@@ -33,23 +34,17 @@ public class Device extends AbstractAuditEntity implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @Column
+    @Column(unique = true , nullable = false)
     private Long serialNumber;
 
     @Column
     @Enumerated(EnumType.ORDINAL)
-    private MeasuringDeviceType type;
+    private MeasuringDeviceType deviceType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id")
+    @ManyToOne(fetch = FetchType.LAZY,optional=true)
     private Client client;
 
-    @JoinTable
-    @OneToMany(fetch = FetchType.LAZY,
-            mappedBy = "device",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "device_id")
     private List<DeviceData> values = new ArrayList<>();
 
@@ -71,7 +66,7 @@ public class Device extends AbstractAuditEntity implements Serializable {
     public int hashCode() {
         int hash = 7;
         hash = 71 * hash + Objects.hashCode(this.serialNumber);
-        hash = 71 * hash + Objects.hashCode(this.type);
+        hash = 71 * hash + Objects.hashCode(this.deviceType);
         return hash;
     }
 
@@ -95,25 +90,25 @@ public class Device extends AbstractAuditEntity implements Serializable {
         this.serialNumber = serialNumber;
     }
 
-    public MeasuringDeviceType getType() {
-        return type;
+    public MeasuringDeviceType getDeviceType() {
+        return deviceType;
     }
 
-    public void setType(MeasuringDeviceType type) {
-        this.type = type;
+    public void setDeviceType(MeasuringDeviceType deviceType) {
+        this.deviceType = deviceType;
     }
 
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
+//    public Client getClient() {
+//        return client;
+//    }
+//
+//    public void setClient(Client client) {
+//        this.client = client;
+//    }
 
     @Override
     public String toString() {
-        return "Device{" + "serialNumber=" + serialNumber + ", type=" + type + '}';
+        return "Device{" + "serialNumber=" + serialNumber + ", type=" + deviceType + '}';
     }
 
 }

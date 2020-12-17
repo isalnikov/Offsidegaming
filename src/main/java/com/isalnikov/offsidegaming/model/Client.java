@@ -25,15 +25,10 @@ public class Client extends AbstractAuditEntity implements Serializable {
      private static final long serialVersionUID = 1L;
     
     @Id
-    @GeneratedValue()
+    @GeneratedValue
     private Long id;
 
-    @JoinTable 
-    @OneToMany(fetch = FetchType.LAZY,
-            mappedBy = "client",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "client_id")
     private List<Device> device = new ArrayList<>();
 

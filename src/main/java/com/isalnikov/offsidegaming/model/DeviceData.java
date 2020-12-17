@@ -19,20 +19,20 @@ import javax.persistence.Table;
 @Table
 public class DeviceData extends AbstractAuditEntity implements Serializable {
 
-     private static final long serialVersionUID = 1L;
-    
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    private Device device;
+
     /**
-     *  meter reader
+     * meter reader
      */
     @Column
     private Long value;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Device device;
 
     public DeviceData() {
     }
@@ -40,7 +40,6 @@ public class DeviceData extends AbstractAuditEntity implements Serializable {
     public DeviceData(Long value) {
         this.value = value;
     }
-
 
     @Override
     public int hashCode() {
@@ -66,8 +65,6 @@ public class DeviceData extends AbstractAuditEntity implements Serializable {
         }
         return true;
     }
-    
-    
 
     public Long getId() {
         return id;
@@ -77,23 +74,12 @@ public class DeviceData extends AbstractAuditEntity implements Serializable {
         this.id = id;
     }
 
-     public Long getValue() {
+    public Long getValue() {
         return value;
     }
 
     public void setValue(Long value) {
         this.value = value;
     }
-
-    public Device getDevice() {
-        return device;
-    }
-
-    public void setDevice(Device device) {
-        this.device = device;
-    }
-    
-    
-    
 
 }
