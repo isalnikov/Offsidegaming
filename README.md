@@ -18,4 +18,6 @@ Technical Requirements
 
 6. Include a short README file describing how the application works and how to build and run the project.
 
-Focus on the most essential features first. It is fine to leave TODOs in places across the code, where a certain feature is missing, but you w
+Focus on the most essential features first. It is fine to leave TODOs in places across the code, 
+where a certain feature is missing, but you would have implemented it 
+if you had more time. Package the final project into a ZIP archive.

@@ -2,7 +2,7 @@ package com.isalnikov.offsidegaming;
 
 /**
  *
- * @author igor
+ * @author isalnikov
  */
 public class Main {
     public static void main(String[] args) {
