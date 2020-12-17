@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="INFO" shutdownHook="disable">
-    <Properties>
-        <Property name="log-path">/tmp/log/offsidegaming</Property>
-    </Properties>
     <Appenders>
-        <Console name="Simple" target="SYSTEM_OUT">
+        <Console name="LogToConsole" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{yyMMdd HH:mm:ss} [%-5level] %c{1}:%m%n" /> 
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="ru.isalnikov.offsidegaming" level="INFO"/>
-        <Root level="DEBUG">
-            <AppenderRef ref="Simple" />
+        <Logger name="ru.isalnikov.offsidegaming" level="INFO" additivity="false"/>
+        
+        <Root level="INFO">
+            <AppenderRef ref="LogToConsole" />
         </Root>
     </Loggers>
 </Configuration>
