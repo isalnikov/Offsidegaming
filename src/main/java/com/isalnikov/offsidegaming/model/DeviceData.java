@@ -3,15 +3,13 @@ package com.isalnikov.offsidegaming.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 /**
  *
@@ -19,23 +17,18 @@ import org.springframework.data.annotation.LastModifiedDate;
  */
 @Entity
 @Table
-public class DeviceData implements Serializable {
+public class DeviceData extends AbstractAuditEntity implements Serializable {
 
+     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue
     private Long id;
 
-    @CreatedDate
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date created;
-
-    @LastModifiedDate
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date modified;
-
     /**
      *  meter reader
      */
+    @Column
     private Long value;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -48,16 +41,10 @@ public class DeviceData implements Serializable {
         this.value = value;
     }
 
-    @Override
-    public String toString() {
-        return "DeviceData{" + "created=" + created + ", modified=" + modified + ", device=" + device + '}';
-    }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 59 * hash + Objects.hashCode(this.created);
-        hash = 59 * hash + Objects.hashCode(this.modified);
         hash = 59 * hash + Objects.hashCode(this.value);
         return hash;
     }
@@ -74,12 +61,6 @@ public class DeviceData implements Serializable {
             return false;
         }
         final DeviceData other = (DeviceData) obj;
-        if (!Objects.equals(this.created, other.created)) {
-            return false;
-        }
-        if (!Objects.equals(this.modified, other.modified)) {
-            return false;
-        }
         if (!Objects.equals(this.value, other.value)) {
             return false;
         }
@@ -96,23 +77,7 @@ public class DeviceData implements Serializable {
         this.id = id;
     }
 
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public Date getModified() {
-        return modified;
-    }
-
-    public void setModified(Date modified) {
-        this.modified = modified;
-    }
-
-    public Long getValue() {
+     public Long getValue() {
         return value;
     }
 
