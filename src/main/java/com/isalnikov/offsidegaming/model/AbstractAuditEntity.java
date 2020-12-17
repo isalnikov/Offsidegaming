@@ -5,6 +5,7 @@
  */
 package com.isalnikov.offsidegaming.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -24,6 +25,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  * @author isalnikov
  */
 @MappedSuperclass
+@JsonIgnoreProperties({ "version","lastModifiedDate"})
 @EntityListeners({AuditingEntityListener.class})
 public abstract class AbstractAuditEntity implements Serializable {
 

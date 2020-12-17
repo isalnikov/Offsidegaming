@@ -1,5 +1,8 @@
 package com.isalnikov.offsidegaming.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -18,12 +21,14 @@ import javax.validation.constraints.PositiveOrZero;
  */
 @Entity
 @Table
+@JsonIgnoreProperties({ "id","client"})
 public class DeviceData extends AbstractAuditEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue
+
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
@@ -32,17 +37,23 @@ public class DeviceData extends AbstractAuditEntity implements Serializable {
     /**
      * meter reader
      */
+    @JsonProperty("gas")
     @PositiveOrZero(message = "You cannot have negative numbers of value.") 
     @Column(name = "gas_value" , nullable = false)
     private Long gasValue;
     
+    @JsonProperty("cold")
     @PositiveOrZero(message = "You cannot have negative numbers of value.") 
     @Column(name = "cold_water_value", nullable = false)
     private Long coldWatervalue;
     
+    @JsonProperty("hot")
     @PositiveOrZero(message = "You cannot have negative numbers of value.") 
     @Column(name = "hot_water_value", nullable = false)
     private Long hotWatervalue;
+
+    public DeviceData() {
+    }
 
 
     public DeviceData(Long gasValue, Long coldWatervalue, Long hotWatervalue) {

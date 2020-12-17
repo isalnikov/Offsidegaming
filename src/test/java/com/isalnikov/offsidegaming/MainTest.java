@@ -1,7 +1,7 @@
 package com.isalnikov.offsidegaming;
 
 
-import com.isalnikov.offsidegaming.controller.FacadeController;
+import com.isalnikov.offsidegaming.controller.ClientController;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,7 +19,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class MainTest {
 
-    private static final Logger logger = LogManager.getLogger(FacadeController.class);
+    private static final Logger logger = LogManager.getLogger(ClientController.class);
 
     @LocalServerPort
     private int port;
