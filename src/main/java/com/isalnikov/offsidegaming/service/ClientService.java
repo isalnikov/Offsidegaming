@@ -1,9 +1,9 @@
 package com.isalnikov.offsidegaming.service;
 
 import com.isalnikov.offsidegaming.model.Client;
+import com.isalnikov.offsidegaming.model.DeviceData;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.jpa.repository.Query;
 
 
 /**
@@ -26,5 +26,9 @@ public interface ClientService  {
      public List<Client> findAll();
     
      public Client findAllDataByClientId(Long Id);
+     
+  
+     
+     public Client addNewData(final Long client_id ,final DeviceData data);
 
 }

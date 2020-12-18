@@ -3,6 +3,7 @@ package com.isalnikov.offsidegaming.model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.StreamSupport;
@@ -78,5 +79,40 @@ public class DeviceDataTest {
         log.info(deviceData);
 
     }
+    
+    @Test
+    public void testCompareToDeviceData() {
+        log.info(Integer.compare(4, 5));//-1 4 < 5
+        log.info(Integer.compare(5, 5));//0  5 = 5
+        log.info(Integer.compare(5, 4));//1  5 > 4
+        DeviceData deviceData1 = new DeviceData(1000L, 2000L, 3000L);
+        DeviceData deviceData2 = new DeviceData(2000L, 3000L, 4000L);
+        
+        int compareTo = deviceData1.compareTo(deviceData2);
+        log.info(compareTo);
+        assertEquals(compareTo, -1);
+        
+        DeviceData deviceData3 = new DeviceData(1000L, 2000L, 3000L);
+        DeviceData deviceData4 = new DeviceData(100L, 200L, 400L);
+        
+        compareTo = deviceData3.compareTo(deviceData4);
+        log.info(compareTo);
+        assertEquals(compareTo, 1);
+    }
+    
+    
+    @Test
+    public void testWriterWithDefaultPrettyPrinter() {
+        String json = null;
+        try {
+            ObjectNode help = objectMapper.createObjectNode();
+            help.put("GET ", "curl http://localhost:8888/getDataByPersionId/{clientId}");
+            help.put("POST", "curl -i -X POST -H \"Content-Type: application/json\" -d '{\"gas\":1, \"cold\":1, \"hot\":1 }' http://localhost:8888/addData/{clientId}");
+            json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(help);
+        } catch (JsonProcessingException exception) {
+            json = exception.getMessage();
+        }
 
+        log.info(json);
+    }
 }

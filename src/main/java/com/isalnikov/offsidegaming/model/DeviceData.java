@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -32,7 +33,7 @@ import org.springframework.data.annotation.CreatedDate;
 @Table(indexes = {
                  @Index(name = "client_id_indx", columnList ="client_id DESC")
 })
-public class DeviceData implements Serializable {
+public class DeviceData implements Comparable<DeviceData> , Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -41,7 +42,6 @@ public class DeviceData implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
-    
    
     /**
      * meter reader
@@ -54,12 +54,12 @@ public class DeviceData implements Serializable {
     @JsonProperty("cold")
     @PositiveOrZero(message = "You cannot have negative numbers of value.") 
     @Column(name = "cold_water_value", nullable = false)
-    private Long coldWatervalue;
+    private Long coldWaterValue;
     
     @JsonProperty("hot")
     @PositiveOrZero(message = "You cannot have negative numbers of value.") 
     @Column(name = "hot_water_value", nullable = false)
-    private Long hotWatervalue;
+    private Long hotWaterValue;
 
     public DeviceData() {
     }
@@ -67,16 +67,16 @@ public class DeviceData implements Serializable {
 
     public DeviceData(Long gasValue, Long coldWatervalue, Long hotWatervalue) {
         this.gasValue = gasValue;
-        this.coldWatervalue = coldWatervalue;
-        this.hotWatervalue = hotWatervalue;
+        this.coldWaterValue = coldWatervalue;
+        this.hotWaterValue = hotWatervalue;
     }
 
     @Override
     public int hashCode() {
         int hash = 3;
         hash = 97 * hash + Objects.hashCode(this.gasValue);
-        hash = 97 * hash + Objects.hashCode(this.coldWatervalue);
-        hash = 97 * hash + Objects.hashCode(this.hotWatervalue);
+        hash = 97 * hash + Objects.hashCode(this.coldWaterValue);
+        hash = 97 * hash + Objects.hashCode(this.hotWaterValue);
         return hash;
     }
 
@@ -95,10 +95,10 @@ public class DeviceData implements Serializable {
         if (!Objects.equals(this.gasValue, other.gasValue)) {
             return false;
         }
-        if (!Objects.equals(this.coldWatervalue, other.coldWatervalue)) {
+        if (!Objects.equals(this.coldWaterValue, other.coldWaterValue)) {
             return false;
         }
-        if (!Objects.equals(this.hotWatervalue, other.hotWatervalue)) {
+        if (!Objects.equals(this.hotWaterValue, other.hotWaterValue)) {
             return false;
         }
         return true;
@@ -112,9 +112,34 @@ public class DeviceData implements Serializable {
         this.id = id;
     }
 
+    public Long getGasValue() {
+        return gasValue;
+    }
+
+    public void setGasValue(Long gasValue) {
+        this.gasValue = gasValue;
+    }
+
+    public Long getColdWaterValue() {
+        return coldWaterValue;
+    }
+
+    public void setColdWaterValue(Long coldWaterValue) {
+        this.coldWaterValue = coldWaterValue;
+    }
+
+    public Long getHotWaterValue() {
+        return hotWaterValue;
+    }
+
+    public void setHotWaterValue(Long hotWaterValue) {
+        this.hotWaterValue = hotWaterValue;
+    }
+
+    
     
     public String toValueString() {
-        return  String.format("\nvalues:\n%08d gas\n%08d cold water\n%08d hot water", gasValue ,coldWatervalue , hotWatervalue);
+        return  String.format("\nvalues:\n%08d gas\n%08d cold water\n%08d hot water", gasValue ,coldWaterValue , hotWaterValue);
     }
 
     private static  String str;
@@ -122,11 +147,20 @@ public class DeviceData implements Serializable {
     @Override
     public String toString() {
         if(str == null){
-            str = String.join(";",gasValue.toString(),coldWatervalue.toString(),hotWatervalue.toString());
+            str = String.join(";",gasValue.toString(),coldWaterValue.toString(),hotWaterValue.toString());
         }
         
          
         return str;
+    }
+
+    @Override
+    public int compareTo(DeviceData other) {
+       return Comparator.comparingLong(DeviceData::getGasValue)
+              .thenComparingLong(DeviceData::getColdWaterValue)
+              .thenComparingLong(DeviceData::getHotWaterValue)
+              .compare(this, other);
+      
     }
 
 

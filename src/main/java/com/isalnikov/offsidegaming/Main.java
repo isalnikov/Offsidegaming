@@ -7,7 +7,6 @@ package com.isalnikov.offsidegaming;
 import com.isalnikov.offsidegaming.model.Client;
 import com.isalnikov.offsidegaming.model.DeviceData;
 import com.isalnikov.offsidegaming.service.ClientService;
-import java.util.List;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -40,11 +39,6 @@ public class Main implements CommandLineRunner {
         client.addValue(new DeviceData(10L, 11L, 12L));
 
         clientService.save(client);
-
-        List<Client> list = clientService.findAll();
-        list.stream().map((client_) -> clientService.findAllDataByClientId(client_.getId())).forEachOrdered((client_) -> {
-            client_.getValues().forEach(log::info);
-        });
 
     }
 }
