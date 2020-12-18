@@ -12,6 +12,7 @@ import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -20,7 +21,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table
-public class Client extends AbstractAuditEntity implements Serializable {
+public class Client implements Serializable {
 
      private static final long serialVersionUID = 1L;
     
@@ -29,7 +30,7 @@ public class Client extends AbstractAuditEntity implements Serializable {
     private Long id;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,orphanRemoval = true)
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "client_id", referencedColumnName="id",foreignKey =@ForeignKey(name = "fk_client_id"))
     private List<DeviceData> values = new ArrayList<>();
 
     public Client() {
@@ -57,9 +58,8 @@ public class Client extends AbstractAuditEntity implements Serializable {
     }
 
     
-      public void addValue(DeviceData deviceData) {
+      public void addValue(final DeviceData deviceData) {
         this.values.add(deviceData);
-        deviceData.setClient(this);
     }
 
 
@@ -93,7 +93,14 @@ public class Client extends AbstractAuditEntity implements Serializable {
         return "Client{" + "id=" + id + '}';
     }
     
-    
+    public String historyString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[id : ").append(id);
+        values.forEach((value) -> {
+            sb.append(value.toString());
+         });
+        return sb.toString();
+    }
     
 
 }
