@@ -3,6 +3,7 @@ package com.isalnikov.offsidegaming.repository;
 
 import com.isalnikov.offsidegaming.model.Client;
 import com.isalnikov.offsidegaming.model.DeviceData;
+import java.util.List;
 import javax.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
@@ -31,8 +32,11 @@ public interface ClientRepository extends JpaRepository<Client, Long>{
      public Client getClient(Long id);
      
      
-     @Query(value = "Select * from device_data where id = (Select max(id) from device_data d where d.client_Id=:clientId)", nativeQuery = true)
-     DeviceData findLastDataByClientId(@Param("clientId")Long clientId);
+     @Query(value = "Select dd.gas_value,dd.cold_water_value,dd.hot_water_value from device_data dd where id = (Select max(d.id) from device_data d where d.client_Id=:clientId)" , nativeQuery = true )
+     //@Query(value = "Select new com.isalnikov.offsidegaming.model.DeviceData(dd.gasValue,dd.coldWaterValue,dd.hotWaterValue) from DeviceData dd where id = (Select max(d.id) from DeviceData d where d.client.id=:clientId)")
+     Object findLastDataByClientId(@Param("clientId")Long clientId);
+     
+    
     
     
     

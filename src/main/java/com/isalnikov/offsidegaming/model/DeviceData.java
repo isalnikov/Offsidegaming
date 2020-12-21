@@ -1,29 +1,22 @@
 package com.isalnikov.offsidegaming.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.PositiveOrZero;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-import org.springframework.data.annotation.CreatedDate;
 
 /**
  *
@@ -40,7 +33,8 @@ public class DeviceData implements Comparable<DeviceData> , Serializable {
    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "data_generator")
+    @SequenceGenerator(name="data_generator", sequenceName = "data_seq", allocationSize=100)
     private Long id;
    
     /**
@@ -61,6 +55,7 @@ public class DeviceData implements Comparable<DeviceData> , Serializable {
     @Column(name = "hot_water_value", nullable = false)
     private Long hotWaterValue;
 
+   
     public DeviceData() {
     }
 
@@ -70,7 +65,9 @@ public class DeviceData implements Comparable<DeviceData> , Serializable {
         this.coldWaterValue = coldWatervalue;
         this.hotWaterValue = hotWatervalue;
     }
-
+    
+    
+    
     @Override
     public int hashCode() {
         int hash = 3;

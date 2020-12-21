@@ -57,16 +57,19 @@ public class ClientController {
         return json;
     }
 
-    @GetMapping(value = "/getDataByPersionId/{clientId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/get/{clientId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Client> getDataByPersionId(
             @PathVariable(value = "clientId") Long clientId) {
 
         Client client = clientService.findAllDataByClientId(clientId);
+        
+        DeviceData max = clientService.findLastDataByClientId(clientId);
+        log.info(max);
 
         return ResponseEntity.accepted().body(client);
     }
 
-    @PostMapping(value = "/addData/{clientId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/add/{clientId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addData(
             @PathVariable(value = "clientId") Long clientId,
             @Valid @RequestBody DeviceData deviceData) {

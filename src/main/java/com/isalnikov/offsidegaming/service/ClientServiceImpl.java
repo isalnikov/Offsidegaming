@@ -3,9 +3,11 @@ package com.isalnikov.offsidegaming.service;
 import com.isalnikov.offsidegaming.model.Client;
 import com.isalnikov.offsidegaming.model.DeviceData;
 import com.isalnikov.offsidegaming.repository.ClientRepository;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.LockModeType;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
@@ -18,6 +20,7 @@ import org.springframework.util.Assert;
  *
  * @author isalnikov
  */
+@Log4j2
 @Service
 @Transactional(readOnly = true, timeout = 5)
 public class ClientServiceImpl implements ClientService {
@@ -73,6 +76,14 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public List<Client> findAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public DeviceData findLastDataByClientId(Long clientId) {
+        Object[] list =(Object[]) repository.findLastDataByClientId(clientId);
+     
+     
+      return  null;// new DeviceData((long)BigInteger.valueOf(list[0]),(long)list[1],(long)list[2]);
     }
 
  

@@ -4,6 +4,7 @@ import com.isalnikov.offsidegaming.model.Client;
 import com.isalnikov.offsidegaming.model.DeviceData;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.repository.query.Param;
 
 
 /**
@@ -30,5 +31,7 @@ public interface ClientService  {
   
      
      public Client addNewData(final Long client_id ,final DeviceData data);
+     
+     public DeviceData findLastDataByClientId(@Param("clientId")Long clientId);
 
 }
