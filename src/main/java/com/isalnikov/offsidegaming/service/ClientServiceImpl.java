@@ -22,7 +22,7 @@ import org.springframework.util.Assert;
  */
 @Log4j2
 @Service
-@Transactional(readOnly = true, timeout = 5)
+@Transactional(readOnly = true, timeout = 100)
 public class ClientServiceImpl implements ClientService {
 
     protected final ClientRepository repository;
@@ -35,25 +35,27 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     @Modifying
-    @Transactional(propagation = Propagation.REQUIRES_NEW, timeout = 1)
-    @Lock(LockModeType.READ)
-    public Client addNewData(Long client_id, DeviceData data) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW, timeout = 500)
+    @Lock(LockModeType.PESSIMISTIC_READ)
+    public int addNewData(Long client_id, DeviceData data) {
        Client client =  repository.getClient(client_id);
+       int result = 0;
        if(client != null){
            //TODO Взять последнюю запись и сравнить ее с текщими, если все больше - добавить новую запись .
-            DeviceData maxData = null;
-            //maxData =  repository.findLastDataByClientId(client_id)
+             
+              DeviceData max = findLastDataByClientId(client_id);
             
-            if(maxData != null){
-              if(data.compareTo(maxData) > 1){
-                  client.addValue(data);
+            if(max != null){
+              if(data.compareTo(max) > 0){
+                  repository.addData(client_id, data.getGasValue(), data.getHotWaterValue(), data.getColdWaterValue());
+                  result = 1;
               }
             }
             
-           repository.saveAndFlush(client);
+           
        }
         
-        return client;
+        return result;
     }
 
     @Override
@@ -81,9 +83,9 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public DeviceData findLastDataByClientId(Long clientId) {
         Object[] list =(Object[]) repository.findLastDataByClientId(clientId);
+       ((BigInteger)list[0]).intValue();
      
-     
-      return  null;// new DeviceData((long)BigInteger.valueOf(list[0]),(long)list[1],(long)list[2]);
+      return new DeviceData((long) ((BigInteger)list[0]).intValue() ,(long) ((BigInteger)list[1]).intValue(),(long) ((BigInteger)list[2]).intValue());
     }
 
  

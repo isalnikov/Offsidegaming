@@ -62,9 +62,6 @@ public class ClientController {
             @PathVariable(value = "clientId") Long clientId) {
 
         Client client = clientService.findAllDataByClientId(clientId);
-        
-        DeviceData max = clientService.findLastDataByClientId(clientId);
-        log.info(max);
 
         return ResponseEntity.accepted().body(client);
     }
@@ -73,10 +70,24 @@ public class ClientController {
     public ResponseEntity addData(
             @PathVariable(value = "clientId") Long clientId,
             @Valid @RequestBody DeviceData deviceData) {
-          clientService.addNewData(clientId, deviceData);
-         log.info(deviceData);
+        ResponseEntity result = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
-        return ResponseEntity.ok().build();
+        log.info(deviceData);
+
+        DeviceData max = clientService.findLastDataByClientId(clientId);
+
+        log.info(max);
+
+        if (deviceData.compareTo(max) > 0) {
+            int res = clientService.addNewData(clientId, deviceData);
+            if (res > 0) {
+                result = ResponseEntity.status(HttpStatus.CREATED).build();
+            } else {
+                result = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+        }
+
+        return result;
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
