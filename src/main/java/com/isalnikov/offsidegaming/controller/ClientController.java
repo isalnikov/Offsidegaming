@@ -71,13 +71,7 @@ public class ClientController {
             @PathVariable(value = "clientId") Long clientId,
             @Valid @RequestBody DeviceData deviceData) {
         HttpStatus result = HttpStatus.BAD_REQUEST;
-
-        log.info(deviceData);
-
         DeviceData max = clientService.findLastDataByClientId(clientId);
-
-        log.info(max);
-
         if (deviceData.compareTo(max) > 0) {
             int res = clientService.addNewData(clientId, deviceData);
             result = res > 0 ?  HttpStatus.CREATED : HttpStatus.NOT_FOUND;

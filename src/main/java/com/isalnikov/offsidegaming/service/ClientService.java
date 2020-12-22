@@ -12,16 +12,11 @@ import org.springframework.data.repository.query.Param;
  */
 public interface ClientService {
 
-    String CACHE_CLIENT_DATA = "CACHE_CLIENT_DATA";
-
- 
     public Optional<Client> findById(Long id);
  
     public Client save(Client client);
 
-    public List<Client> findAll();
-
-    public Client findAllDataByClientId(Long Id);
+     public Client findAllDataByClientId(Long Id);
 
     public int addNewData(final Long client_id, final DeviceData data);
 

@@ -28,14 +28,10 @@ import javax.validation.constraints.PositiveOrZero;
 })
 public class DeviceData implements Comparable<DeviceData> , Serializable {
 
-    private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1L;
     
-   private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "data_generator")
-    //@SequenceGenerator(name="data_generator", sequenceName = "data_seq", allocationSize=100)
     private Long id;
    
     /**

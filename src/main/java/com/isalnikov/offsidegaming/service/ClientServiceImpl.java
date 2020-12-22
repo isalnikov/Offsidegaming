@@ -80,10 +80,6 @@ public class ClientServiceImpl implements ClientService {
         return repository.saveAndFlush(client);
     }
 
-    @Override
-    public List<Client> findAll() {
-        return repository.findAll();
-    }
 
     @Override
     public DeviceData findLastDataByClientId(Long clientId) {
