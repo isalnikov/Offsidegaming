@@ -38,7 +38,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     @Modifying
-    @CacheEvict(cacheNames = "client")
+    @CacheEvict(cacheNames = "client", allEntries = true)
     @Transactional(propagation = Propagation.REQUIRES_NEW, timeout = 500)
     @Lock(LockModeType.PESSIMISTIC_READ)
     public int addNewData(Long client_id, DeviceData data) {
