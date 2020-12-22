@@ -44,7 +44,7 @@ public class ClientControllerTest {
 
     
     
-  //  @Test
+    //@Test
     public void whenGet() throws Exception {
        
         Client client = new Client();
@@ -68,16 +68,7 @@ public class ClientControllerTest {
     public void whenPost() throws Exception {
         String jsonString = "{\"gas\" : 1000, \"cold\" :2000, \"hot\" : \"3000\"}";
         
-        
-        Client client = new Client();
-        client.setId(1L);
-        DeviceData data = new DeviceData(1L, 1L, 1L);
-        data.setId(1L);
-        client.addValue(data);
-        
-//          int res = clientService.addNewData(clientId, deviceData);
-//         Client client =  repository.getClient(client_id);
-      //  doNothing().when(clientRepository.addData(1L,1L,1L,1L));
+
         
         mockMvc.perform(MockMvcRequestBuilders.post("/add/1")
                 .content(jsonString)

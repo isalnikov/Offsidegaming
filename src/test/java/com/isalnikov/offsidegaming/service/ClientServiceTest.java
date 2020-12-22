@@ -2,21 +2,11 @@ package com.isalnikov.offsidegaming.service;
 
 import com.isalnikov.offsidegaming.model.Client;
 import com.isalnikov.offsidegaming.model.DeviceData;
-import com.isalnikov.offsidegaming.repository.ClientRepository;
 import lombok.extern.log4j.Log4j2;
-import org.hibernate.LazyInitializationException;
-import org.junit.Rule;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import static org.mockito.ArgumentMatchers.any;
-import org.mockito.Mockito;
-import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -31,8 +21,6 @@ public class ClientServiceTest {
     @Autowired
     private ClientService clientService;
 
-    @Rule
-public ExpectedException exceptionRule = ExpectedException.none();
 
     @Test
     public void testSaveClient() {
@@ -47,7 +35,7 @@ public ExpectedException exceptionRule = ExpectedException.none();
 
     @Test
     public void testCacheable() {
-//TODO для полноценных тестов нцжен тестовый контекст 
+//TODO для полноценных  Mockito тестов нужен тестовый контекст 
 //        Client client = new Client();
 //        client.setId(1L);
 //        DeviceData data = new DeviceData(1L, 1L, 1L);
