@@ -23,6 +23,14 @@
 -Добавил тесты (тестов мало, обычно добавляю больше на разные виды кейсов и слоев)
 -Добавил наполнение базы при старте приложения
 
+mvn install
+java -jar Offsidegaming-1.0-SNAPSHOT.jar
+curl http://localhost:8888/get/1
+curl http://localhost:8888/get/2
+curl -i -X POST  -H "Content-Type: application/json" -d '{"gas":2222, "cold":2222, "hot":2222}' http://localhost:8888/add/1
+
+
+
 Create an application to monitor gas, cold and hot water usage. 
 No UI needed, only REST API. 
 Two REST API methods should be implemented: one for submitting the current measurements for a given user, 
