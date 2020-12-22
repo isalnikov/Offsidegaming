@@ -66,7 +66,7 @@ public class ClientController {
         return ResponseEntity.ok().body(client);
     }
 
-    @PostMapping(value = "/add/{clientId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/add/{clientId}", produces = MediaType.APPLICATION_JSON_VALUE ,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addData(
             @PathVariable(value = "clientId") Long clientId,
             @Valid @RequestBody DeviceData deviceData) {
@@ -83,7 +83,10 @@ public class ClientController {
             result = res > 0 ?  HttpStatus.CREATED : HttpStatus.NOT_FOUND;
         }
 
-        return ResponseEntity.status(result).build();
+        return ResponseEntity
+                .status(result)
+                .contentType(MediaType.APPLICATION_JSON)
+                .build();
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

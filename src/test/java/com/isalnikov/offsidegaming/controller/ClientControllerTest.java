@@ -29,12 +29,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class ClientControllerTest {
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @MockBean
-    private ClientRepository clientRepository;
+//TODO нужент тестовый контекст 
+//    @Autowired
+//    private ObjectMapper objectMapper;
+//
+//    @MockBean
+//    private ClientRepository clientRepository;
 
     @Autowired
     ClientController clientController;
@@ -44,7 +44,7 @@ public class ClientControllerTest {
 
     
     
-    //@Test
+    @Test
     public void whenGet() throws Exception {
        
         Client client = new Client();
@@ -53,8 +53,8 @@ public class ClientControllerTest {
         data.setId(1L);
         client.addValue(data);
         
-      when(clientRepository.findAllDataByClientId(1L))
-                .thenReturn(client);
+//      when(clientRepository.findAllDataByClientId(1L))
+//                .thenReturn(client);
         
         mockMvc.perform(MockMvcRequestBuilders.get("/get/1")
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -66,14 +66,14 @@ public class ClientControllerTest {
     
     @Test
     public void whenPost() throws Exception {
-        String jsonString = "{\"gas\" : 1000, \"cold\" :2000, \"hot\" : \"3000\"}";
+        String jsonString = "{\"gas\" : 1000, \"cold\" :2000, \"hot\" : 3000}";
         
 
         
         mockMvc.perform(MockMvcRequestBuilders.post("/add/1")
                 .content(jsonString)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content()
                         .contentType(MediaType.APPLICATION_JSON_VALUE));
     }
