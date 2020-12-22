@@ -31,12 +31,23 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     @Query("select c from Client c join fetch c.values where c.id=:id")
     public Client findAllDataByClientId(@Param("id") Long id);
 
+    
+    /**
+     * получаем исключительную блокировку для того чтобы произвести добавление новых данных
+     * @param id
+     * @return 
+     */
     @Lock(LockModeType.PESSIMISTIC_READ)
     @QueryHints({
         @QueryHint(name = "javax.persistence.lock.timeout", value = "300")})
     @Query("select c from Client c where c.id=:id")
     public Client getClient(Long id);
 
+    /**
+     * Находим последнии показания максимально эффективным подзапосом для данной объектной модели 
+     * @param clientId
+     * @return 
+     */
     @Query(value = "Select dd.gas_value,dd.cold_water_value,dd.hot_water_value from device_data dd where id = (Select max(d.id) from device_data d where d.client_Id=:clientId)", nativeQuery = true)
     Object findLastDataByClientId(@Param("clientId") Long clientId);
 

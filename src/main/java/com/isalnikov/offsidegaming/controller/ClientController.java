@@ -46,8 +46,8 @@ public class ClientController {
         if (json == null) {
             try {
                 ObjectNode help = objectMapper.createObjectNode();
-                help.put("GET", "curl http://localhost:8888/getDataByPersionId/{clientId}");
-                help.put("POST", "curl -i -X POST  -H \"Content-Type: application/json\" -d '{\"gas\":1, \"cold\":1, \"hot\":1 }' http://localhost:8888/addData/{clientId}");
+                help.put("GET", "curl http://localhost:8888/get/{clientId}");
+                help.put("POST", "curl -i -X POST  -H \"Content-Type: application/json\" -d '{\"gas\":1, \"cold\":1, \"hot\":1 }' http://localhost:8888/add/{clientId}");
                 json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(help);
             } catch (JsonProcessingException exception) {
                 json = exception.getMessage();
@@ -63,14 +63,14 @@ public class ClientController {
 
         Client client = clientService.findAllDataByClientId(clientId);
 
-        return ResponseEntity.accepted().body(client);
+        return ResponseEntity.ok().body(client);
     }
 
     @PostMapping(value = "/add/{clientId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addData(
             @PathVariable(value = "clientId") Long clientId,
             @Valid @RequestBody DeviceData deviceData) {
-        ResponseEntity result = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        HttpStatus result = HttpStatus.BAD_REQUEST;
 
         log.info(deviceData);
 
@@ -80,14 +80,10 @@ public class ClientController {
 
         if (deviceData.compareTo(max) > 0) {
             int res = clientService.addNewData(clientId, deviceData);
-            if (res > 0) {
-                result = ResponseEntity.status(HttpStatus.CREATED).build();
-            } else {
-                result = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            }
+            result = res > 0 ?  HttpStatus.CREATED : HttpStatus.NOT_FOUND;
         }
 
-        return result;
+        return ResponseEntity.status(result).build();
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

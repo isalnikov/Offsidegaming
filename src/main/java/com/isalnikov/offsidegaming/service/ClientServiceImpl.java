@@ -6,9 +6,12 @@ import com.isalnikov.offsidegaming.repository.ClientRepository;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
+
 import javax.persistence.LockModeType;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
@@ -22,7 +25,7 @@ import org.springframework.util.Assert;
  */
 @Log4j2
 @Service
-@Transactional(readOnly = true, timeout = 100)
+@Transactional(readOnly = true, timeout = 1000)
 public class ClientServiceImpl implements ClientService {
 
     protected final ClientRepository repository;
@@ -35,6 +38,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     @Modifying
+    @CacheEvict(cacheNames = "client")
     @Transactional(propagation = Propagation.REQUIRES_NEW, timeout = 500)
     @Lock(LockModeType.PESSIMISTIC_READ)
     public int addNewData(Long client_id, DeviceData data) {
@@ -59,6 +63,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    @Cacheable(cacheNames = "client")
     public Client findAllDataByClientId(Long Id) {
         return repository.findAllDataByClientId(Id);
     }
@@ -83,9 +88,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public DeviceData findLastDataByClientId(Long clientId) {
         Object[] list =(Object[]) repository.findLastDataByClientId(clientId);
-       ((BigInteger)list[0]).intValue();
-     
-      return new DeviceData((long) ((BigInteger)list[0]).intValue() ,(long) ((BigInteger)list[1]).intValue(),(long) ((BigInteger)list[2]).intValue());
+       return new DeviceData((long) ((BigInteger)list[0]).intValue() ,(long) ((BigInteger)list[1]).intValue(),(long) ((BigInteger)list[2]).intValue());
     }
 
  
