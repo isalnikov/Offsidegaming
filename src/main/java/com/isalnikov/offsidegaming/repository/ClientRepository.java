@@ -38,7 +38,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
      * @param id
      * @return
      */
-    //@Transactional(propagation = Propagation.MANDATORY)
+  
     @Lock(LockModeType.PESSIMISTIC_READ)
     @QueryHints({
         @QueryHint(name = "javax.persistence.lock.timeout", value = "300")})
